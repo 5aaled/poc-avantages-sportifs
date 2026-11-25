@@ -1,0 +1,12 @@
+{
+  "taux_prime": 0.05,
+  "seuil_activites": 15,
+  "jours_bien_etre": 5,
+  "distance_max_marche_km": 15,
+  "distance_max_velo_km": 25,
+  "jours_ouvrables_an": 218,
+  "score_geocodage_min": 0.5,
+  "adresse_entreprise": "1362 Av. des Platanes, 34970 Lattes",
+  "seed_activites": 42,
+  "mois_historique": 12
+}
