@@ -78,7 +78,7 @@ def connect(path: Path | None = None) -> sqlite3.Connection:
     database = path or config.DB_PATH
     database.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(database)
-    conn.row_factory = sqlite3.Row
+    conn.row_factory = sqlite3.Row   # allows us to access database query results using column names (e.g. row["name"]) instead of only numeric indexes (e.g. row[0]).
     return conn
 
 

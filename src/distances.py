@@ -20,7 +20,7 @@ OSRM = {
     "transit": ("https://router.project-osrm.org/route/v1/driving/", "transit_approx_voiture"),
 }
 
-
+# the main function that run for all employess
 def calculer_trajets(
     conn: sqlite3.Connection, employes: pd.DataFrame,params: dict,reconstruire: bool = False, maintenant: datetime | None = None,) -> tuple[int, int]:
 
@@ -49,7 +49,7 @@ def calculer_trajets(
         _ecrire_trajet(conn, ligne)
     return len(a_calculer), deja
 
-
+# ,calcute for only one employee
 def _trajet_salarie(employe, adresse_bureau, bureau, params, maintenant) -> dict:
     mode = str(employe["moyen_deplacement"])
     profil = MODES_ITINERAIRE.get(mode, "driving")  # here i exctract moyen de deplacement groupé that i will insert to calculte the distance in the function distance

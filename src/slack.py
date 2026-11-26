@@ -1,4 +1,3 @@
-"""Slack text for one session, and delivery through a webhook or a local outbox."""
 
 from __future__ import annotations
 
@@ -12,14 +11,7 @@ from src.db import horodatage
 from src.http_client import post_json
 
 
-def formater_message(
-    prenom: str,
-    nom: str,
-    type_activite: str,
-    distance_m: float | None,
-    date_debut: datetime | str,
-    date_fin: datetime | str,
-    commentaire: str | None,
+def formater_message( prenom: str, nom: str, type_activite: str, distance_m: float | None,date_debut: datetime | str,date_fin: datetime | str, commentaire: str | None,
 ) -> str:
     debut = _comme_datetime(date_debut)
     fin = _comme_datetime(date_fin)
@@ -64,7 +56,7 @@ def envoyer_slack(message: str, id_salarie: int | None = None) -> str:
             code, body = post_json(webhook, {"text": message})
             statut = "envoye" if code == 200 else "erreur"
             detail = body[:200]
-        except Exception as exc:  # noqa: BLE001 - delivery must not lose the activity
+        except Exception as exc:
             statut = "erreur"
             detail = str(exc)[:200]
 

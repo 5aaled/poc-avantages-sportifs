@@ -49,6 +49,6 @@ def charger_sources() -> pd.DataFrame:
     employes = rh.merge(sport, on="id_salarie", how="left")
     employes["date_naissance"] = pd.to_datetime(employes["date_naissance"]).dt.date
     employes["date_embauche"] = pd.to_datetime(employes["date_embauche"]).dt.date
-    employes["sport"] = employes["sport"].where(employes["sport"].notna(), None)  # .where(condition, other)
+    employes["sport"] = employes["sport"].where(employes["sport"].notna(), None)  # .where(condition, other)  # This line replaces missing values (NaN) in the sport column with Python's None, which represents SQL NULL when inserting data into SQLite."
     employes["salaire_brut"] = employes["salaire_brut"].astype(float)
     return employes.sort_values("id_salarie").reset_index(drop=True)

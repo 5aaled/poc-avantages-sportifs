@@ -75,10 +75,10 @@ def calculer_eligibilite_salarie(
     salaire: float, mode: str, est_anomalie: int , motif_trajet: str,nb_activites: int,
 params: dict,
 ) -> dict:
-    taux = float(params["taux_prime"])
-    seuil = int(params["seuil_activites"])
-    jours = int(params["jours_bien_etre"])
-    ouvrables = float(params["jours_ouvrables_an"])
+    taux = float(params["taux_prime"])  # 5%
+    seuil = int(params["seuil_activites"])  # 15
+    jours = int(params["jours_bien_etre"])   # 5
+    ouvrables = float(params["jours_ouvrables_an"])  # 218
 
     if mode in MODES_SPORTIFS and not est_anomalie:
         eligible_prime = 1

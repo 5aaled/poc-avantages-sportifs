@@ -135,7 +135,7 @@ def executer(reconstruire_activites: bool = False, reconstruire_distances: bool 
 def _remplacer_employes(conn: sqlite3.Connection, employes: pd.DataFrame) -> None:
     conn.execute("DELETE FROM employes")
     lignes = []
-    for ligne in employes.to_dict(orient="records"):
+    for ligne in employes.to_dict(orient="records"):  # orient="records" transforms a DataFrame into a list of row-based dictionaries,
         sport = ligne["sport"]
         lignes.append(
             (
@@ -150,7 +150,7 @@ def _remplacer_employes(conn: sqlite3.Connection, employes: pd.DataFrame) -> Non
                 int(ligne["jours_cp"]),
                 ligne["adresse_domicile"],
                 ligne["moyen_deplacement"],
-                None if sport is None or (isinstance(sport, float) and pd.isna(sport)) else sport,
+                None if pd.isna(sport) else sport,
             )
         )
     conn.executemany(

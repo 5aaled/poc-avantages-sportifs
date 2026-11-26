@@ -1,4 +1,4 @@
-"""Small HTTP helper. requests carries its own certificate """
+
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ def construire_url(base: str, params: dict) -> str:
 
 
 def get_json(url: str, timeout: int = 30, tentatives: int = 3) -> dict:
-    dernier : Exception | None = None
+    dernier  = None
     for essai in range(tentatives):
         try:
             response = requests.get(
