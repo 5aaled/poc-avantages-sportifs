@@ -40,7 +40,6 @@ COLONNES_ACTIVITES = [
     "type_activite",
     "distance_m",
     "commentaire",
-    "source",
     "message_slack",
     "cree_le",
 ]
@@ -160,9 +159,11 @@ def _remplacer_employes(conn: sqlite3.Connection, employes: pd.DataFrame) -> Non
     conn.commit()
 
 
+
+# synchronizes employees' sports activities between the DataFrame and SQLite database by removing obsolete activities, identifying employees who need activities, generating them, and inserting them into the database.
 def _synchroniser_activites(conn, employes, params, reconstruire: bool, maintenant: datetime) -> int:
     if reconstruire:
-        conn.execute("DELETE FROM activites WHERE source = 'simulation'")
+        conn.execute("DELETE FROM activites")
     ids_sport = [
         int(identifiant)
         for identifiant in employes.loc[employes["sport"].notna(), "id_salarie"].tolist()
@@ -170,11 +171,11 @@ def _synchroniser_activites(conn, employes, params, reconstruire: bool, maintena
     if ids_sport:
         marques = ",".join("?" for _ in ids_sport)
         conn.execute(
-            f"DELETE FROM activites WHERE source = 'simulation' AND id_salarie NOT IN ({marques})",
+            f"DELETE FROM activites WHERE id_salarie NOT IN ({marques})",
             ids_sport,
         )
     else:
-        conn.execute("DELETE FROM activites WHERE source = 'simulation'")
+        conn.execute("DELETE FROM activites")
     conn.commit()
 
     deja = {int(row[0]) for row in conn.execute("SELECT DISTINCT id_salarie FROM activites")}
@@ -194,7 +195,6 @@ def _synchroniser_activites(conn, employes, params, reconstruire: bool, maintena
                 ligne["type_activite"],
                 ligne["distance_m"],
                 ligne["commentaire"],
-                ligne["source"],
                 ligne["message_slack"],
                 horodatage(ligne["cree_le"]),
             )
@@ -206,7 +206,7 @@ def _synchroniser_activites(conn, employes, params, reconstruire: bool, maintena
     conn.commit()
     return len(lignes)
 
-
+# here it convert the date to str because sqlite doenst have date as datatype
 def _date_iso(valeur) -> str:
     if hasattr(valeur, "isoformat"):
         return valeur.isoformat()
@@ -218,7 +218,7 @@ def _resume_controles(controles: list[dict]) -> str:
     avertissements = sum(controle["statut"] == "avertissement" for controle in controles)
     return f"{len(controles) - echecs - avertissements} ok, {avertissements} avertissement(s), {echecs} échec(s)"
 
-
+# Display the final pipeline summary in the terminal.
 def _afficher_synthese(synthese: dict, controles: list[dict]) -> None:
     print("", flush=True)
     print("Synthèse", flush=True)

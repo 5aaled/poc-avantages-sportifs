@@ -61,7 +61,6 @@ def generer_activites( employes: pd.DataFrame,params: dict,maintenant: datetime 
         "type_activite",
         "distance_m",
         "commentaire",
-        "source",
         "message_slack",
         "cree_le",
     ]
@@ -98,14 +97,13 @@ def _seances_salarie(employe, profil, params, maintenant, generateur) -> list[di
                 debut + timedelta(minutes=minutes),
                 distance,
                 commentaire,
-                "simulation",
                 maintenant,
             )
         )
     return seances
 
 
-def _ligne(employe, profil, debut, fin, distance, commentaire, source, cree_le) -> dict:
+def _ligne(employe, profil, debut, fin, distance, commentaire, cree_le) -> dict:
     return {
         "id_salarie": int(employe["id_salarie"]),
         "date_debut": debut,
@@ -113,7 +111,6 @@ def _ligne(employe, profil, debut, fin, distance, commentaire, source, cree_le) 
         "type_activite": profil["type"],
         "distance_m": distance,
         "commentaire": commentaire,
-        "source": source,
         "message_slack": formater_message(
             employe["prenom"],
             employe["nom"],

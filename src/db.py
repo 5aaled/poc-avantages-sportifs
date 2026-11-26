@@ -50,7 +50,6 @@ CREATE TABLE IF NOT EXISTS activites (
     type_activite TEXT NOT NULL,
     distance_m REAL,
     commentaire TEXT,
-    source TEXT NOT NULL,
     message_slack TEXT NOT NULL,
     cree_le TEXT NOT NULL
 );
